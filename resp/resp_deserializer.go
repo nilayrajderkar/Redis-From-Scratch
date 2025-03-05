@@ -1,4 +1,4 @@
-package main
+package resp
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func serializeString(s string) (*string, error) {
+func deserializeString(s string) (*string, error) {
 	index := strings.Index(s, "\r\n")
 	if index == -1 {
 		return nil, errors.New("invalid input string")
@@ -15,7 +15,7 @@ func serializeString(s string) (*string, error) {
 	return &result, nil
 }
 
-func serializeInteger(s string) (*int, error) {
+func deserializeInteger(s string) (*int, error) {
 	index := strings.Index(s, "\r\n")
 	if index == -1 {
 		return nil, errors.New("invalid input string for integer type")
@@ -28,7 +28,7 @@ func serializeInteger(s string) (*int, error) {
 	return &integerValue, nil
 }
 
-func serializeBulkString(s string) (*string, error) {
+func deserializeBulkString(s string) (*string, error) {
 	index := strings.Index(s, "\r\n")
 	if index == -1 {
 		return nil, errors.New("invalid input string for bulk string type")
@@ -54,7 +54,7 @@ func serializeBulkString(s string) (*string, error) {
 	return &result, nil
 }
 
-func serializeError(s string) (*string, error) {
+func deserializeError(s string) (*string, error) {
 	index := strings.Index(s, "\r\n")
 	if index == -1 {
 		return nil, errors.New("invalid input string for error type")
@@ -62,7 +62,7 @@ func serializeError(s string) (*string, error) {
 	return nil, errors.New(s[1:index])
 }
 
-func serializeArray(s string) (*[]interface{}, error) {
+func deserializeArray(s string) (*[]interface{}, error) {
 	index := strings.Index(s, "\r\n")
 	if index == -1 {
 		return nil, errors.New("invalid input string for array type")
@@ -124,7 +124,7 @@ func serializeArray(s string) (*[]interface{}, error) {
 				return nil, errors.New("invalid nested array length")
 			}
 			// Recursively process the nested array
-			nested, err := Serialize(s[currentPos:])
+			nested, err := Deserialize(s[currentPos:])
 			if err != nil {
 				return nil, err
 			}
@@ -148,7 +148,7 @@ func serializeArray(s string) (*[]interface{}, error) {
 			return nil, errors.New("unexpected end of array element")
 		}
 
-		element, err := Serialize(s[currentPos:elementEnd])
+		element, err := Deserialize(s[currentPos:elementEnd])
 		if err != nil {
 			return nil, err
 		}
@@ -160,22 +160,22 @@ func serializeArray(s string) (*[]interface{}, error) {
 	return &result, nil
 }
 
-func Serialize(s string) (interface{}, error) {
+func Deserialize(s string) (interface{}, error) {
 	if len(s) == 0 {
 		return nil, errors.New("empty input string")
 	}
 
 	switch s[0] {
 	case '*':
-		return serializeArray(s)
+		return deserializeArray(s)
 	case '$':
-		return serializeBulkString(s)
+		return deserializeBulkString(s)
 	case ':':
-		return serializeInteger(s)
+		return deserializeInteger(s)
 	case '-':
-		return serializeError(s)
+		return deserializeError(s)
 	case '+':
-		return serializeString(s)
+		return deserializeString(s)
 	default:
 		return nil, errors.New("invalid input string")
 	}

@@ -1,11 +1,11 @@
-package main
+package resp
 
 import (
 	"reflect"
 	"testing"
 )
 
-func Test_serializeSimpleString(t *testing.T) {
+func Test_deserializeSimpleString(t *testing.T) {
 	type args struct {
 		s string
 	}
@@ -16,7 +16,7 @@ func Test_serializeSimpleString(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "It should serialize simple input string",
+			name: "It should deserialize simple input string",
 			args: args{
 				s: "+OK\r\n",
 			},
@@ -34,23 +34,23 @@ func Test_serializeSimpleString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := serializeString(tt.args.s)
+			got, err := deserializeString(tt.args.s)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("serialize() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("deserialize() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr && got == nil {
-				t.Errorf("serialize() returned nil, want %v", tt.want)
+				t.Errorf("deserialize() returned nil, want %v", tt.want)
 				return
 			}
 			if !tt.wantErr && *got != tt.want {
-				t.Errorf("serialize() = %v, want %v", *got, tt.want)
+				t.Errorf("deserialize() = %v, want %v", *got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_serializeInteger(t *testing.T) {
+func Test_deserializeInteger(t *testing.T) {
 	type args struct {
 		s string
 	}
@@ -86,23 +86,23 @@ func Test_serializeInteger(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := serializeInteger(tt.args.s)
+			got, err := deserializeInteger(tt.args.s)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("serialize_integer() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("deserialize_integer() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr && got == nil {
-				t.Errorf("serialize_integer() returned nil, want %v", tt.want)
+				t.Errorf("deserialize_integer() returned nil, want %v", tt.want)
 				return
 			}
 			if !tt.wantErr && *got != tt.want {
-				t.Errorf("serialize_integer() = %v, want %v", *got, tt.want)
+				t.Errorf("deserialize_integer() = %v, want %v", *got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_serializeBulkString(t *testing.T) {
+func Test_deserializeBulkString(t *testing.T) {
 	type args struct {
 		s string
 	}
@@ -151,23 +151,23 @@ func Test_serializeBulkString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := serializeBulkString(tt.args.s)
+			got, err := deserializeBulkString(tt.args.s)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("serialize_bulk_string() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("deserialize_bulk_string() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr && got == nil {
-				t.Errorf("serialize_bulk_string() returned nil, want %v", tt.want)
+				t.Errorf("deserialize_bulk_string() returned nil, want %v", tt.want)
 				return
 			}
 			if !tt.wantErr && *got != tt.want {
-				t.Errorf("serialize_bulk_string() = %v, want %v", *got, tt.want)
+				t.Errorf("deserialize_bulk_string() = %v, want %v", *got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_serializeError(t *testing.T) {
+func Test_deserializeError(t *testing.T) {
 	type args struct {
 		s string
 	}
@@ -194,19 +194,19 @@ func Test_serializeError(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := serializeError(tt.args.s)
+			got, err := deserializeError(tt.args.s)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("serailize_error() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("deserialize_error() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if got != tt.want {
-				t.Errorf("serailize_error() = %v, want %v", got, tt.want)
+				t.Errorf("deserialize_error() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_serializeArray(t *testing.T) {
+func Test_deserializeArray(t *testing.T) {
 	type args struct {
 		s string
 	}
@@ -249,18 +249,18 @@ func Test_serializeArray(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := serializeArray(tt.args.s)
+			got, err := deserializeArray(tt.args.s)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("serializeArray() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("deserializeArray() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr {
 				if got == nil {
-					t.Errorf("serializeArray() returned nil, want %v", tt.want)
+					t.Errorf("deserializeArray() returned nil, want %v", tt.want)
 					return
 				}
 				if len(*got) != len(*tt.want) {
-					t.Errorf("serializeArray() returned array of length %d, want %d", len(*got), len(*tt.want))
+					t.Errorf("deserializeArray() returned array of length %d, want %d", len(*got), len(*tt.want))
 					return
 				}
 				for i := range *got {
@@ -273,9 +273,105 @@ func Test_serializeArray(t *testing.T) {
 					}
 
 					if !reflect.DeepEqual(gotVal, (*tt.want)[i]) {
-						t.Errorf("serializeArray()[%d] = %v (%T), want %v (%T)",
+						t.Errorf("deserializeArray()[%d] = %v (%T), want %v (%T)",
 							i, gotVal, gotVal, (*tt.want)[i], (*tt.want)[i])
 					}
+				}
+			}
+		})
+	}
+}
+
+func Test_Deserialize(t *testing.T) {
+	tests := []struct {
+		name    string
+		input   string
+		want    interface{}
+		wantErr bool
+	}{
+		{
+			name:    "should deserialize simple string",
+			input:   "+OK\r\n",
+			want:    "OK",
+			wantErr: false,
+		},
+		{
+			name:    "should deserialize integer",
+			input:   ":123\r\n",
+			want:    123,
+			wantErr: false,
+		},
+		{
+			name:    "should deserialize bulk string",
+			input:   "$5\r\nhello\r\n",
+			want:    "hello",
+			wantErr: false,
+		},
+		{
+			name:    "should deserialize error",
+			input:   "-Error message\r\n",
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name:    "should deserialize array",
+			input:   "*2\r\n$5\r\nhello\r\n$5\r\nworld\r\n",
+			want:    []interface{}{"hello", "world"},
+			wantErr: false,
+		},
+		{
+			name:    "should deserialize mixed array",
+			input:   "*3\r\n:1\r\n$5\r\nhello\r\n+OK\r\n",
+			want:    []interface{}{1, "hello", "OK"},
+			wantErr: false,
+		},
+		{
+			name:    "should return error for invalid input",
+			input:   "invalid",
+			want:    nil,
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := Deserialize(tt.input)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Deserialize() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if got == nil {
+					t.Errorf("Deserialize() returned nil, want %v", tt.want)
+					return
+				}
+
+				// Handle array type
+				if gotArray, ok := got.(*[]interface{}); ok {
+					derefArray := make([]interface{}, len(*gotArray))
+					for i, v := range *gotArray {
+						// Dereference each element if it's a pointer
+						if intPtr, ok := v.(*int); ok {
+							derefArray[i] = *intPtr
+						} else if strPtr, ok := v.(*string); ok {
+							derefArray[i] = *strPtr
+						} else {
+							derefArray[i] = v
+						}
+					}
+					got = derefArray
+				} else {
+					// Handle single value pointer types
+					if gotPtr, ok := got.(*int); ok {
+						got = *gotPtr
+					}
+					if gotPtr, ok := got.(*string); ok {
+						got = *gotPtr
+					}
+				}
+
+				if !reflect.DeepEqual(got, tt.want) {
+					t.Errorf("Deserialize() = %v (%T), want %v (%T)", got, got, tt.want, tt.want)
 				}
 			}
 		})
