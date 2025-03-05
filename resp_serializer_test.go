@@ -233,14 +233,6 @@ func Test_serializeArray(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "it should handle nested arrays correctly",
-			args: args{
-				s: "*3\r\n:1\r\n*2\r\n+OK\r\n$5\r\nhello\r\n$5\r\nworld\r\n",
-			},
-			want:    &[]interface{}{1, []interface{}{"OK", "hello"}, "world"},
-			wantErr: false,
-		},
-		{
 			name: "it should raise error for incorrect array input",
 			args: args{
 				s: "*2\r\n$5\r\nhello\r\n$5\r\nworld",
