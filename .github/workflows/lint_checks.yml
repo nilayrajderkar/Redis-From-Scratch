@@ -19,6 +19,7 @@ jobs:
       - name: Install golangci-lint
         run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2
       - name: Run lint
+        working-directory: ${{ github.workspace }}
         run: |
           go fmt ./...
           golangci-lint run
@@ -35,4 +36,5 @@ jobs:
       - name: Install dependencies
         run: go mod download
       - name: Run tests
+        working-directory: ${{ github.workspace }}
         run: go test -v ./...
