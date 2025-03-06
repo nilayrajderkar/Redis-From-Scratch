@@ -42,8 +42,11 @@ Currently implemented commands:
 ## Project Structure 
 
 ├── client/         # Client implementation
+
 ├── resp/           # RESP serializer and deserializer
+
 ├── server/         # Server implementation
+
 ├── main.go         # Entry point for the server
 
 ## Requirements
