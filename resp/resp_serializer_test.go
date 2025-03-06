@@ -73,12 +73,12 @@ func Test_serializeBulkString(t *testing.T) {
 		{
 			name: "It should serialize bulk string",
 			arg:  "hello",
-			want: "$5\r\nhello",
+			want: "$5\r\nhello\r\n",
 		},
 		{
 			name: "It should serialize empty bulk string",
 			arg:  "",
-			want: "$0\r\n",
+			want: "$0\r\n\r\n",
 		},
 	}
 	for _, tt := range tests {
