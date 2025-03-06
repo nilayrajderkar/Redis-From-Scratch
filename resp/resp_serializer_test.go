@@ -159,7 +159,7 @@ func Test_Serialize(t *testing.T) {
 		{
 			name: "It should serialize string",
 			arg:  "hello",
-			want: "+hello\r\n",
+			want: "$5\r\nhello\r\n",
 		},
 		{
 			name: "It should serialize integer",
@@ -169,7 +169,7 @@ func Test_Serialize(t *testing.T) {
 		{
 			name: "It should serialize array",
 			arg:  []interface{}{"hello", 123},
-			want: "*2\r\n+hello\r\n:123\r\n",
+			want: "*2\r\n$5\r\nhello\r\n:123\r\n",
 		},
 		{
 			name: "It should serialize error",

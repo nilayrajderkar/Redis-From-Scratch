@@ -13,7 +13,7 @@ func serializeInteger(i int) string {
 }
 
 func serializeBulkString(s string) string {
-	return "$" + strconv.Itoa(len(s)) + "\r\n" + s
+	return "$" + strconv.Itoa(len(s)) + "\r\n" + s + "\r\n"
 }
 
 func serializeError(s string) string {
@@ -32,7 +32,7 @@ func serializeArray(elements []interface{}) string {
 func Serialize(element interface{}) string {
 	switch element := element.(type) {
 	case string:
-		return serializeString(element)
+		return serializeBulkString(element)
 	case int:
 		return serializeInteger(element)
 	case []interface{}:
