@@ -127,12 +127,12 @@ func Test_serializeArray(t *testing.T) {
 		{
 			name: "It should serialize array of strings",
 			arg:  []interface{}{"hello", "world"},
-			want: "*2\r\n+hello\r\n+world\r\n",
+			want: "*2\r\n$5\r\nhello\r\n$5\r\nworld\r\n",
 		},
 		{
 			name: "It should serialize array of mixed types",
 			arg:  []interface{}{1, "hello", errors.New("error")},
-			want: "*3\r\n:1\r\n+hello\r\n-error\r\n",
+			want: "*3\r\n:1\r\n$5\r\nhello\r\n-error\r\n",
 		},
 		{
 			name: "It should serialize empty array",
